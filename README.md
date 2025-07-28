@@ -4,6 +4,8 @@ This is a test assignment for **[FastMCP.me](https://fastmcp.me)** - a service f
 
 You are tasked with creating a **Real Weather MCP Server** using the new .NET MCP (Model Context Protocol) library.
 
+**Note**: The use of AI development tools like Cursor, Claude Code, GitHub Copilot, and other AI IDEs is welcomed and encouraged for this assignment.
+
 ## Assignment Overview
 
 Your task is to create a functional MCP server that provides real weather data through AI assistants like Claude. The server should integrate with actual weather APIs and provide accurate, current weather information.
