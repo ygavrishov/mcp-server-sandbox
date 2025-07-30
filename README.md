@@ -2,6 +2,13 @@
 
 The app provides current weather information and weather forecast via MCP interface.
 
+## Supported Tools
+1. `GetCurrentWeather` - Get current weather for a specified location
+2. `GetWeatherForecast` - Get weather forecast for a specified location
+3. `GetWeatherAlerts` - Get weather alerts/warnings for a location 
+
+All methods use the same input parameters - `city` and `countryCode` (optional).
+
 ## How to Setup
 
 ### OpenWeatherMap API Keys
@@ -21,13 +28,6 @@ It would be better to create a separate API key to use in the app with a meaning
 
 **NOTE 2**: For `GetCurrentWeather` you can use a free tier API key. For 2 others you will need `One Call API 3.0` subscription.
 
-## Supported Tools
-1. `GetCurrentWeather` - Get current weather for a specified location
-2. `GetWeatherForecast` - Get weather forecast for a specified location
-3. `GetWeatherAlerts` - Get weather alerts/warnings for a location 
-
-All methods use the same input parameters - `city` and `countryCode` (optional).
-
 ## How to Run
 
 The app is not yet published as a NuGet package is it's a simple demo so the app can be built and run from the sources. For that follow the steps:
@@ -36,12 +36,13 @@ The app is not yet published as a NuGet package is it's a simple demo so the app
 * Switch Copilot to Chat mode
 * Change Built-in mode from Ask to Agent
 * Button Tools will be marked as having a one another tool to setup. Press Refresh.
-* If everything is done properly, the Select tool dropdown shows 3 weather methods.
-* To test the app ask Copilot `Give me current weather in London, UK`. The expected result is shown below.
+* If everything is done properly, the Select tool dropdown shows 3 weather methods (Image 1).
+* To test the app ask Copilot `Give me current weather in London, UK`. Image 2 is the expected result.
 
-Picture 1: Methods provided by the MCP server.
-![Available tools](image-1.png)
-Picture 2: A sample request execution.
-![Demo request](image.png)
+Image 1: Methods provided by the MCP server.
+![Available tools](images\image-1.png)
+
+Image 2: A sample request execution.
+![Demo request](images\image-2.png)
 
 Thanks for reading! 🌤️
