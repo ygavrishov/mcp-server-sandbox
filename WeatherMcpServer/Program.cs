@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 using Serilog;
 
-using WeatherMcpServer.Configuration;
+using WeatherMcpServer.Extensions;
 using WeatherMcpServer.Tools;
 
 var builder = Host.CreateApplicationBuilder();
@@ -19,13 +19,12 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
-builder.Configuration.AddUserSecrets<Program>();
+builder.Configuration
+    .AddUserSecrets<Program>()
+    .AddEnvironmentVariables();
 
-// Add the MCP services: the transport to use (stdio) and the tools to register.
 builder.Services
-    .AddSingleton<IWeatherConfig, WeatherConfig>()
-    .AddSingleton<WeatherService>()
-    .AddSingleton<WeatherTools>()
+    .RegisterServices()
     .AddLogging(loggingBuilder =>
     {
         loggingBuilder.ClearProviders();
@@ -39,16 +38,18 @@ builder.Services
 
 var host = builder.Build();
 
-var weatherController = host.Services.GetRequiredService<WeatherTools>();
 
-// How to invoke
+#if DEBUG
 {
-    var weather = await weatherController.GetWeatherAlerts("Paris", "FR");
-    Console.WriteLine(weather);
+    var controller = host.Services.GetRequiredService<RandomNumberTools>();
+    var random = controller.GetRandomNumber(40, 50);
+    Console.WriteLine(random);
 }
 {
-    var weather = await weatherController.GetCurrentWeather("London", "UK");
+    var controller = host.Services.GetRequiredService<WeatherTools>();
+    var weather = await controller.GetCurrentWeather("London", "UK");
     Console.WriteLine(weather);
 }
+#endif
 
 await host.RunAsync();

@@ -1,107 +1,47 @@
-# Real Weather MCP Server - Test Assignment
+# Real Weather MCP Server
 
-This is a test assignment for **[FastMCP.me](https://fastmcp.me)** - a service for creating and deploying MCP servers.
+The app provides current weather information and weather forecast via MCP interface.
 
-You are tasked with creating a **Real Weather MCP Server** using the new .NET MCP (Model Context Protocol) library.
+## How to Setup
 
-**Note**: The use of AI development tools like Cursor, Claude Code, GitHub Copilot, and other AI IDEs is welcomed and encouraged for this assignment.
+### OpenWeatherMap API Keys
 
-## Assignment Overview
+The app uses OpenWeatherMap API under the hood, so it's necessary to provide your own API key to have the service working. There are 2 ways to do that:
+* if the app is running in Kubernetes, put `OpenWeatherMapApiKey` into a secret and attach it to the pods.
+* the other universal way is to set the same environment variable for the application environment.
 
-Your task is to create a functional MCP server that provides real weather data through AI assistants like Claude. The server should integrate with actual weather APIs and provide accurate, current weather information.
+To get the API key from OpenWeatherMap you need to:
 
-## Requirements
+* sign up in https://openweathermap.org/
+* go to My API key profile area, copy API key there.
 
-### Core Functionality
-- **Real Weather Data**: Integrate with a real weather API (e.g., OpenWeatherMap, AccuWeather, or similar)
-- **Current Weather**: Get current weather conditions for any city/location
-- **Weather Forecast**: Provide weather forecasts (at least 3-day forecast)
-- **Multiple Locations**: Support weather queries for different cities worldwide
-- **Error Handling**: Proper error handling for invalid locations, API failures, etc.
+It would be better to create a separate API key to use in the app with a meaningful name.
 
-### Technical Requirements
-- Use the .NET MCP Server library (`Microsoft.Extensions.AI.Abstractions`)
-- Implement proper MCP tools using `[McpServerTool]` attributes
-- Include environment variable configuration for API keys
-- Follow .NET best practices and coding standards
-- Include proper logging and error handling
+**NOTE 1**: Please also be aware that the API key can be not yet activated for hours.
 
-### Expected Tools to Implement
+**NOTE 2**: For `GetCurrentWeather` you can use a free tier API key. For 2 others you will need `One Call API 3.0` subscription.
+
+## Supported Tools
 1. `GetCurrentWeather` - Get current weather for a specified location
 2. `GetWeatherForecast` - Get weather forecast for a specified location
-3. `GetWeatherAlerts` - Get weather alerts/warnings for a location (bonus)
+3. `GetWeatherAlerts` - Get weather alerts/warnings for a location 
 
-## Getting Started
+All methods use the same input parameters - `city` and `countryCode` (optional).
 
-### Prerequisites
-- .NET 8.0 or later
-- Weather API key (recommend OpenWeatherMap free tier)
+## How to Run
 
-### Setup Instructions
-1. Install the MCP server template:
-   ```bash
-   dotnet new install Microsoft.Extensions.AI.Templates
-   ```
+The app is not yet published as a NuGet package is it's a simple demo so the app can be built and run from the sources. For that follow the steps:
 
-2. The basic project structure is already provided in the `WeatherMcpServer` directory
+* Open the app in Visual Studio Code. You need to install all the updates in advance and setup GitHub Copilot extension.
+* Switch Copilot to Chat mode
+* Change Built-in mode from Ask to Agent
+* Button Tools will be marked as having a one another tool to setup. Press Refresh.
+* If everything is done properly, the Select tool dropdown shows 3 weather methods.
+* To test the app ask Copilot `Give me current weather in London, UK`. The expected result is shown below.
 
-3. Get a free API key from a weather service provider
+Picture 1: Methods provided by the MCP server.
+![Available tools](image-1.png)
+Picture 2: A sample request execution.
+![Demo request](image.png)
 
-4. Configure your API key as an environment variable
-
-### Example Tool Structure
-```csharp
-[McpServerTool]
-[Description("Gets current weather conditions for the specified city.")]
-public async Task<string> GetCurrentWeather(
-    [Description("The city name to get weather for")] string city,
-    [Description("Optional: Country code (e.g., 'US', 'UK')")] string? countryCode = null)
-{
-    // Your implementation here
-}
-```
-
-## Evaluation Criteria
-
-Your solution will be evaluated on:
-
-1. **Functionality** (40%)
-   - Does it work with real weather data?
-   - Are all required features implemented?
-   - How well does it handle edge cases?
-
-2. **Code Quality** (30%)
-   - Clean, readable, and maintainable code
-   - Proper error handling and logging
-   - Following .NET conventions
-
-3. **MCP Integration** (20%)
-   - Proper use of MCP server attributes and patterns
-   - Good tool descriptions and parameter definitions
-   - Correct server configuration
-
-4. **Documentation & Testing** (10%)
-   - Clear documentation of setup and usage
-   - Basic testing of functionality
-   - API key configuration instructions
-
-## Resources
-
-- [MCP .NET Documentation](https://learn.microsoft.com/dotnet/ai/quickstarts/build-mcp-server)
-- [MCP .NET Samples](https://github.com/microsoft/mcp-dotnet-samples)
-- [MCP Server Quickstart Blog](https://devblogs.microsoft.com/dotnet/mcp-server-dotnet-nuget-quickstart/)
-- [OpenWeatherMap API](https://openweathermap.org/api) (free tier available)
-
-## Submission
-
-Please provide:
-1. Complete source code with proper project structure
-2. Instructions for setup and configuration
-3. Example usage or demo of the working server
-4. Brief documentation of your implementation approach
-
-## Time Expectation
-
-This assignment should take approximately 2-4 hours to complete, depending on your experience level.
-
-Good luck! 🌤️
+Thanks for reading! 🌤️

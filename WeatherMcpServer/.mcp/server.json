@@ -1,7 +1,7 @@
 {
   "$schema": "https://modelcontextprotocol.io/schemas/draft/2025-07-09/server.json",
   "description": "Test Weather MCP server",
-  "name": "io.github.<your GitHub username here>/<your repo name>",
+  "name": "io.github.ygavrishov/mcp-server-sandbox",
   "packages": [
     {
       "registry_name": "nuget",
@@ -12,7 +12,7 @@
     }
   ],
   "repository": {
-    "url": "https://github.com/<your GitHub username here>/<your repo name>",
+    "url": "https://github.com/ygavrishov/mcp-server-sandbox",
     "source": "github"
   },
   "version_detail": {
