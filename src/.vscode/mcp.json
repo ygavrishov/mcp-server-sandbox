@@ -1,0 +1,13 @@
+{
+  "servers": {
+    "WeatherMcpServer": {
+      "type": "stdio",
+      "command": "dotnet",
+      "args": [
+        "run",
+        "--project",
+        "WeatherMcpServer"
+      ]
+    }
+  }
+}
