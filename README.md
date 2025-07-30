@@ -40,9 +40,12 @@ The app is not yet published as a NuGet package is it's a simple demo so the app
 * To test the app ask Copilot `Give me current weather in London, UK`. Image 2 is the expected result.
 
 Image 1: Methods provided by the MCP server.
+
 ![Available tools](img/image-1.png)
 
+
 Image 2: A sample request execution.
+
 ![Demo request](img/image-2.png)
 
 Thanks for reading! 🌤️
