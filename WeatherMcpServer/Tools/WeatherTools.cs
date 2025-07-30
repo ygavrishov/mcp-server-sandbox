@@ -1,26 +1,32 @@
-using System.ComponentModel;
+using Microsoft.Extensions.Logging;
+
 using ModelContextProtocol.Server;
+
+using System.ComponentModel;
 
 namespace WeatherMcpServer.Tools;
 
-public class WeatherTools
+public class WeatherTools(WeatherService weatherService, ILogger<WeatherTools> logger) : McpToolsBase (logger)
 {
     [McpServerTool]
-    [Description("Describes random weather in the provided city.")]
-    public string GetCityWeather(
-        [Description("Name of the city to return weather for")] string city)
-    {
-        // Read the environment variable during tool execution.
-        // Alternatively, this could be read during startup and passed via IOptions dependency injection
-        var weather = Environment.GetEnvironmentVariable("WEATHER_CHOICES");
-        if (string.IsNullOrWhiteSpace(weather))
-        {
-            weather = "balmy,rainy,stormy";
-        }
+    [Description("Gets current weather conditions for the specified city.")]
+    public Task<string> GetCurrentWeather(
+    [Description("The city name to get weather for")] string city,
+    [Description("Optional: Country code (e.g., 'US', 'UK')")] string? countryCode = null) =>
+        ProcessRequest(() => weatherService.GetCurrentWeatherAsync(city, countryCode));
 
-        var weatherChoices = weather.Split(",");
-        var selectedWeatherIndex =  Random.Shared.Next(0, weatherChoices.Length);
+    [McpServerTool]
+    [Description("Gets weather forecast for the specified location.")]
+    public Task<string> GetWeatherForecast(
+        [Description("The city name")] string city,
+        [Description("Optional country code")] string? countryCode = null,
+        [Description("Number of forecast days (max 5)")] int days = 5) =>
+        ProcessRequest(() => weatherService.GetWeatherForecastAsync(city, countryCode, days));
 
-        return $"The weather in {city} is {weatherChoices[selectedWeatherIndex]}.";
-    }
+    [McpServerTool]
+    [Description("Gets weather alerts for the specified city.")]
+    public Task<string> GetWeatherAlerts(
+        [Description("The city name")] string city,
+        [Description("Optional country code")] string? countryCode = null) =>
+        ProcessRequest(() => weatherService.GetWeatherAlertsAsync(city, countryCode));
 }

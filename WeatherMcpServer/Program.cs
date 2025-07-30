@@ -1,18 +1,54 @@
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+
+using Serilog;
+
+using WeatherMcpServer.Configuration;
 using WeatherMcpServer.Tools;
 
-var builder = Host.CreateApplicationBuilder(args);
+var builder = Host.CreateApplicationBuilder();
 
 // Configure all logs to go to stderr (stdout is used for the MCP protocol messages).
 builder.Logging.AddConsole(o => o.LogToStandardErrorThreshold = LogLevel.Trace);
 
+// Serilog configuration
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+builder.Configuration.AddUserSecrets<Program>();
+
 // Add the MCP services: the transport to use (stdio) and the tools to register.
 builder.Services
+    .AddSingleton<IWeatherConfig, WeatherConfig>()
+    .AddSingleton<WeatherService>()
+    .AddSingleton<WeatherTools>()
+    .AddLogging(loggingBuilder =>
+    {
+        loggingBuilder.ClearProviders();
+        loggingBuilder.AddSerilog(dispose: true);
+    })
     .AddMcpServer()
     .WithStdioServerTransport()
     .WithTools<RandomNumberTools>()
     .WithTools<WeatherTools>();
 
-await builder.Build().RunAsync();
+
+var host = builder.Build();
+
+var weatherController = host.Services.GetRequiredService<WeatherTools>();
+
+// How to invoke
+{
+    var weather = await weatherController.GetWeatherAlerts("Paris", "FR");
+    Console.WriteLine(weather);
+}
+{
+    var weather = await weatherController.GetCurrentWeather("London", "UK");
+    Console.WriteLine(weather);
+}
+
+await host.RunAsync();
