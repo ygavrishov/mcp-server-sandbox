@@ -38,18 +38,4 @@ builder.Services
 
 var host = builder.Build();
 
-
-#if DEBUG
-{
-    var controller = host.Services.GetRequiredService<RandomNumberTools>();
-    var random = controller.GetRandomNumber(40, 50);
-    Console.WriteLine(random);
-}
-{
-    var controller = host.Services.GetRequiredService<WeatherTools>();
-    var weather = await controller.GetCurrentWeather("London", "UK");
-    Console.WriteLine(weather);
-}
-#endif
-
 await host.RunAsync();
